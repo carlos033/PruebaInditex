@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: Inditex API
+  version: "1.0"
+  description: Información de stock de Inditex
+  contact:
+    name: Carlos Diaz
+    email: cdr8725@gmail.com
+paths:
+  /prices/{brandId}/{productId}:
+    get:
+      summary: Obtener los productos por ID de empresa, producto y fecha de inicio.
+      description: Obtener todos los productos dado el ID de la empresa, el del producto y la fecha de inicio de su precio.
+      tags:
+        - Prices
+      operationId: listarPrices
+      parameters:
+        - in: path
+          name: brandId
+          description: ID de la empresa a la que pertenece
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: productId
+          description: ID del producto buscado
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: fechaInicio
+          description: Fecha de inicio del precio
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceDTO'
+        '204':
+          description: No encontrado
+        '500':
+          description: BD no accesible
+components:
+  schemas:
+    PriceDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        brandId:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        priceList:
+          type: string
+        productID:
+          type: string
+        priority:
+          type: integer
+        precio:
+          type: number
+        curr:
+          type: string
+      example:
+        id: 1
+        brandId: "EmpresaXYZ"
+        startDate: "2023-05-01T14:30:00"
+        endDate: "2023-05-15T14:30:00"
+        priceList: "Tarifa1"
+        productID: "Producto123"
+        priority: 1
+        precio: 19.99
+        curr: "EUR"
+
