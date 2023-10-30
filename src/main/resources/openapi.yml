@@ -54,32 +54,32 @@ components:
       properties:
         id:
           type: integer
+          example: 1
         brandId:
           type: string
+          example: "1"
         startDate:
           type: string
           format: date-time
+          example: "2023-05-01T14:30:00Z"
         endDate:
           type: string
           format: date-time
+          example: "2023-05-15T14:30:00Z"
         priceList:
           type: string
+          example: "3"
         productID:
           type: string
+          example: "1565"
         priority:
           type: integer
+          example: 1
         precio:
           type: number
+          example: 19.99
         curr:
           type: string
-      example:
-        id: 1
-        brandId: "EmpresaXYZ"
-        startDate: "2023-05-01T14:30:00"
-        endDate: "2023-05-15T14:30:00"
-        priceList: "Tarifa1"
-        productID: "Producto123"
-        priority: 1
-        precio: 19.99
-        curr: "EUR"
+          example: "EUR"
+
 

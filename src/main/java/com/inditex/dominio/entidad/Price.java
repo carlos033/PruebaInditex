@@ -38,15 +38,14 @@ public class Price implements Serializable {
 
   @Schema(name = "startDate",
       description = "Fecha en la que se empieza a aplicar"
-          + " el precio tarifa indicado",
+          + " el precio tarifa indicado formato yyyy-MM-ddTHH:mm:ss",
       example = "2023-05-01T14:30:00")
   @JsonFormat(shape = JsonFormat.Shape.STRING,
       pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime startDate;
 
-  @Schema(name = "endDate",
-      description = "fechas en la que se finaliza la"
-          + " aplicacion del precio tarifa indicado",
+  @Schema(name = "endDate", description = "fechas en la que se finaliza la"
+      + " aplicacion del precio tarifa indicado formato yyyy-MM-ddTHH:mm:ss",
       example = "2023-05-01T14:30:00")
   @JsonFormat(shape = JsonFormat.Shape.STRING,
       pattern = "yyyy-MM-dd'T'HH:mm:ss")
