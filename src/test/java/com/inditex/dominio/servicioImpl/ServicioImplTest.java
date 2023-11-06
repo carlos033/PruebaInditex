@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.inditex.dominio.entidad.Price;
 import com.inditex.dominio.excepciones.ExcepcionInditex;
 import com.inditex.dominio.repositorio.RepositorioPrice;
+import com.inditex.dominio.servicioimpl.ServicioImplPrice;
 
 @ExtendWith(MockitoExtension.class)
 class ServicioImplTest {
@@ -35,66 +34,63 @@ class ServicioImplTest {
   @Test
   void testListarPrices() throws ExcepcionInditex {
     String idEmpresa = "2";
-    String idProducto = "2";
+    String idtarifa = "2";
     LocalDateTime fechaInicio = LocalDateTime.now();
 
-    // Crear al menos un producto en la lista
-    Price producto = new Price();
-    producto.setId(1);
-    producto.setBrandId(idEmpresa);
-    producto.setStartDate(fechaInicio);
-    producto.setEndDate(fechaInicio);
-    producto.setPriceList("2");
-    producto.setProductID(idProducto);
-    producto.setPriority((short) 1);
-    producto.setPrecio(22.0);
-    producto.setCurr("EUR");
-    List<Price> listaPrices = new ArrayList<>();
-    listaPrices.add(producto); // Agregar el producto a la lista
+    // Crear al menos un tarifa en la lista
+    Price tarifa = new Price();
+    tarifa.setId(1);
+    tarifa.setBrandId(idEmpresa);
+    tarifa.setStartDate(fechaInicio);
+    tarifa.setEndDate(fechaInicio);
+    tarifa.setPriceList("2");
+    tarifa.setProductID(idtarifa);
+    tarifa.setPriority((short) 1);
+    tarifa.setPrecio(22.0);
+    tarifa.setCurr("EUR");
+   
 
-    when(repositorio.findByBrandIdAndProductIDAndStartDate(idEmpresa,
-        idProducto, fechaInicio)).thenReturn(listaPrices);
 
-    List<Price> resultado =
-        servicio.listarPrices(idEmpresa, idProducto, fechaInicio);
+    when(repositorio.findPricesWithMaxPriceList(idEmpresa, idtarifa,
+        fechaInicio)).thenReturn(tarifa);
 
-    verify(repositorio).findByBrandIdAndProductIDAndStartDate(idEmpresa,
-        idProducto, fechaInicio);
+    Price resultado =
+        servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
 
-    assertEquals(listaPrices, resultado);
+    verify(repositorio).findPricesWithMaxPriceList(idEmpresa, idtarifa,
+        fechaInicio);
+
+    assertEquals(tarifa, resultado);
   }
 
   @Test
   void testListarPrices2() throws ExcepcionInditex {
     String idEmpresa = "2";
-    String idProducto = "2";
+    String idtarifa = "2";
     LocalDateTime fechaInicio = LocalDateTime.now();
-    Price producto = new Price(1, idEmpresa, fechaInicio, fechaInicio, "2",
-        idProducto, (short) 1, 22.0, "EUR");
+    Price tarifa = new Price(1, idEmpresa, fechaInicio, fechaInicio, "2",
+        idtarifa, (short) 1, 22.0, "EUR");
+   
 
+    when(repositorio.findPricesWithMaxPriceList(idEmpresa, idtarifa,
+        fechaInicio)).thenReturn(tarifa);
 
-    List<Price> listaPrices = new ArrayList<>();
-    listaPrices.add(producto); // Agregar el producto a la lista
+    Price resultado =
+        servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
 
-    when(repositorio.findByBrandIdAndProductIDAndStartDate(idEmpresa,
-        idProducto, fechaInicio)).thenReturn(listaPrices);
+    verify(repositorio).findPricesWithMaxPriceList(idEmpresa, idtarifa,
+        fechaInicio);
 
-    List<Price> resultado =
-        servicio.listarPrices(idEmpresa, idProducto, fechaInicio);
-
-    verify(repositorio).findByBrandIdAndProductIDAndStartDate(idEmpresa,
-        idProducto, fechaInicio);
-
-    assertEquals(listaPrices, resultado);
+    assertEquals(tarifa, resultado);
   }
 
   @Test
   void testListarPricesNoEncontrado() {
     String idEmpresa = "empresaId";
-    String idProducto = "productoId";
+    String idtarifa = "tarifaId";
     LocalDateTime fechaInicio = LocalDateTime.now();
 
     assertThrows(ExcepcionInditex.class,
-        () -> servicio.listarPrices(idEmpresa, idProducto, fechaInicio));
+        () -> servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio));
   }
 }

@@ -1,7 +1,6 @@
 package com.inditex.infraestructura.controlador;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,9 +34,9 @@ public class ControladorPrice implements PricesApi {
   private MapperPrice mapper;
 
   @Operation(
-      summary = "Obtener todos los productos por ID de empresa, producto y la fecha de inicio de su precio",
+      summary = "Obtener la tarifa a aplicar teniendo en cuenta el ID de la empresa del grupo, el id del producto y la fecha que nos interesa",
       tags = {"Prices"},
-      description = "Obtener todos los productos dado el ID de la empresa, el del producto y la fecha de inicio de su precio")
+      description = "Obtener la tarifa a aplicar teniendo en cuenta el ID de la empresa del grupo, el id del producto y la fecha que nos interesa")
   @ApiResponse(responseCode = "200", description = "Ok",
       content = @Content(schema = @Schema(implementation = Price.class)))
   @ApiResponse(responseCode = "204", description = "No encontrado",
@@ -45,23 +44,21 @@ public class ControladorPrice implements PricesApi {
   @ApiResponse(responseCode = "500", description = "Bd no accesible",
       content = @Content(schema = @Schema(implementation = Void.class)))
   @GetMapping("/prices/{brandId}/{productId}")
-  public ResponseEntity<List<PriceDTO>> listarPrices(
+  public ResponseEntity<PriceDTO> obtenerTarifaAplicar(
       @PathVariable("brandId") @Parameter(
-          description = "  Id de la empresa a la que pertenece",
+          description = "  Id de la empresa del grupo",
           required = true) String brandId,
       @PathVariable("productId") @Parameter(
           description = "  Id del producto buscado",
           required = true) String productId,
-      @RequestParam("fechaInicio") @Parameter(
-          description = " Fecha de inicio del precio") @DateTimeFormat(
-              pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime fechaInicio)
+      @RequestParam("fechaAConsultar") @Parameter(
+          description = " Fecha de consulta para la tarifa") @DateTimeFormat(
+              pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime fechaAConsultar)
       throws ExcepcionInditex {
     logger
         .info("Llamada al servicio, mapeamos la repuesta para mostrar el DTO");
-
-    return new ResponseEntity<>(
-        servicio.listarPrices(brandId, productId, fechaInicio).stream()
-            .map(mapper::mapeoADTO).toList(),
-        HttpStatus.OK);
+    return new ResponseEntity<>(mapper.mapeoADTO(
+        servicio.obtenerTarifaAplicar(brandId, productId, fechaAConsultar),
+        fechaAConsultar), HttpStatus.OK);
   }
 }

@@ -11,18 +11,14 @@ import com.inditex.dominio.entidad.Price;
 
 @Mapper(componentModel = "spring")
 public interface MapperPrice {
-  @Mapping(target = "startDate", source = "startDate",
-      qualifiedByName = "localDateTimeToOffsetDateTime")
-  @Mapping(target = "endDate", source = "endDate",
-      qualifiedByName = "localDateTimeToOffsetDateTime")
-  PriceDTO mapeoADTO(Price entidad);
 
-  @Named("localDateTimeToOffsetDateTime")
-  default OffsetDateTime localDateTimeToOffsetDateTime(
+  @Mapping(target = "consultationDate", source = "fechaAConsultar",
+      qualifiedByName = "mapLocalDateTimeToOffsetDateTime")
+  PriceDTO mapeoADTO(Price entidad, LocalDateTime fechaAConsultar);
+
+  @Named("mapLocalDateTimeToOffsetDateTime")
+  default OffsetDateTime mapLocalDateTimeToOffsetDateTime(
       LocalDateTime localDateTime) {
-    if (localDateTime == null) {
-      return null;
-    }
-    return localDateTime.atOffset(ZoneOffset.UTC);
+    return localDateTime.atZone(ZoneOffset.UTC).toOffsetDateTime();
   }
 }

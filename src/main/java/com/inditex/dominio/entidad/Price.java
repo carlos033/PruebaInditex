@@ -27,7 +27,7 @@ public class Price implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @NotNull
-  @Schema(name = "id", description = "Id de la prenda", example = "1")
+  @Schema(name = "id", description = "Id de la tarifa", example = "1")
   private int id;
 
   @NotNull

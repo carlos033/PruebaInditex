@@ -1,10 +1,7 @@
 package com.inditex.aplicacion.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -19,34 +16,20 @@ class MapperPriceTest {
   @Test
   void testMapeoADTO() {
     Price price = new Price();
+    price.setBrandId("1");
+    price.setCurr("EUR");
     price.setStartDate(LocalDateTime.of(2023, 10, 30, 12, 0));
     price.setEndDate(LocalDateTime.of(2023, 11, 30, 12, 0));
-
-    PriceDTO priceDTO = mapper.mapeoADTO(price);
-
-    assertEquals(OffsetDateTime.of(2023, 10, 30, 12, 0, 0, 0, ZoneOffset.UTC),
-        priceDTO.getStartDate());
-    assertEquals(OffsetDateTime.of(2023, 11, 30, 12, 0, 0, 0, ZoneOffset.UTC),
-        priceDTO.getEndDate());
-  }
-
-  @Test
-  void testLocalDateTimeToOffsetDateTime() {
-    LocalDateTime localDateTime = LocalDateTime.of(2023, 10, 30, 12, 0);
-    OffsetDateTime offsetDateTime =
-        mapper.localDateTimeToOffsetDateTime(localDateTime);
-
-    assertEquals(OffsetDateTime.of(2023, 10, 30, 12, 0, 0, 0, ZoneOffset.UTC),
-        offsetDateTime);
-  }
-
-  @Test
-  void testLocalDateTimeToOffsetDateTimeWithNull() {
-    LocalDateTime localDateTime = null;
-
-    OffsetDateTime offsetDateTime =
-        mapper.localDateTimeToOffsetDateTime(localDateTime);
-
-    assertNull(offsetDateTime);
+    price.setId(1);
+    price.setPrecio(39.12);
+    price.setPriceList("1");
+    price.setPriority((short) 1);
+    price.setProductID("3915");
+    LocalDateTime fechaConsulta = LocalDateTime.now();
+    PriceDTO priceDTO = mapper.mapeoADTO(price, fechaConsulta);
+    assertEquals(priceDTO.getBrandId(), price.getBrandId());
+    assertEquals(priceDTO.getPriceList(), price.getPriceList());
+    assertEquals(priceDTO.getPriority(), price.getPriority());
+    assertEquals(priceDTO.getProductID(), price.getProductID());
   }
 }

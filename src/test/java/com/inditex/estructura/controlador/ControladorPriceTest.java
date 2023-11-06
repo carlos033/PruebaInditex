@@ -1,13 +1,10 @@
 package com.inditex.estructura.controlador;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +19,7 @@ import com.inditex.aplicacion.dto.PriceDTO;
 import com.inditex.aplicacion.mapper.MapperPrice;
 import com.inditex.dominio.entidad.Price;
 import com.inditex.dominio.excepciones.ExcepcionInditex;
-import com.inditex.dominio.servicioImpl.ServicioImplPrice;
+import com.inditex.dominio.servicioimpl.ServicioImplPrice;
 import com.inditex.infraestructura.controlador.ControladorPrice;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,16 +42,15 @@ class ControladorPriceTest {
   @Test
   void testListarPrices() throws ExcepcionInditex {
     PriceDTO productoDTO = new PriceDTO();
-    when(servicio.listarPrices(any(), any(), any(LocalDateTime.class)))
-        .thenReturn(Collections.singletonList(new Price()));
+    when(servicio.obtenerTarifaAplicar(any(), any(), any(LocalDateTime.class)))
+        .thenReturn(new Price());
 
-    doReturn(productoDTO).when(mapper).mapeoADTO(any(Price.class));
+    doReturn(productoDTO).when(mapper).mapeoADTO(any(Price.class),
+        any(LocalDateTime.class));
 
-    ResponseEntity<List<PriceDTO>> response = controlador
-        .listarPrices("empresaId", "productoId", LocalDateTime.now());
+    ResponseEntity<PriceDTO> response = controlador
+        .obtenerTarifaAplicar("empresaId", "productoId", LocalDateTime.now());
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-
-    assertFalse(response.getBody().isEmpty());
   }
 }
