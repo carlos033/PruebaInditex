@@ -29,7 +29,7 @@ public class ControladorPrice implements PricesApi {
 
   private static final Logger logger =
       LoggerFactory.getLogger(ControladorPrice.class);
-  private ServicioPrice servicio;
+  private ServicioPrice servicioBusquedaTarifa;
 
   private MapperPrice mapper;
 
@@ -58,7 +58,7 @@ public class ControladorPrice implements PricesApi {
     logger
         .info("Llamada al servicio, mapeamos la repuesta para mostrar el DTO");
     return new ResponseEntity<>(mapper.mapeoADTO(
-        servicio.obtenerTarifaAplicar(brandId, productId, fechaAConsultar),
+        servicioBusquedaTarifa.obtenerTarifaAplicar(brandId, productId, fechaAConsultar),
         fechaAConsultar), HttpStatus.OK);
   }
 }

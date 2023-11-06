@@ -16,14 +16,14 @@ public class ServicioImplPrice implements ServicioPrice {
   private static final Logger logger =
       LoggerFactory.getLogger(ServicioImplPrice.class);
 
-  private RepositorioPrice repositorio;
+  private RepositorioPrice repositorioPrice;
 
   @Override
   public Price obtenerTarifaAplicar(String idEmpresa, String productId,
       LocalDateTime fechaAConsulta) throws ExcepcionInditex {
     logger.info("Hacemos la llamada al repositorio");
 
-    Price tarifa = repositorio.findPricesWithMaxPriceList(idEmpresa, productId,
+    Price tarifa = repositorioPrice.findPricesWithMaxPriceList(idEmpresa, productId,
         fechaAConsulta);
     if (tarifa == null) {
       logger.info("la tarifa es nula por tanto no existe en la BD");
