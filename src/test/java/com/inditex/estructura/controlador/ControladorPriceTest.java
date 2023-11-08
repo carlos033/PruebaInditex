@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import com.inditex.aplicacion.dto.PriceDTO;
 import com.inditex.aplicacion.mapper.MapperPrice;
 import com.inditex.dominio.entidad.Price;
-import com.inditex.dominio.excepciones.ExcepcionInditex;
+import com.inditex.dominio.excepciones.NotContentInditex;
 import com.inditex.dominio.servicioimpl.ServicioImplPrice;
 import com.inditex.infraestructura.controlador.ControladorPrice;
 
@@ -40,16 +40,16 @@ class ControladorPriceTest {
   }
 
   @Test
-  void testListarPrices() throws ExcepcionInditex {
+  void testListarPrices() throws NotContentInditex {
     PriceDTO productoDTO = new PriceDTO();
-    when(servicio.obtenerTarifaAplicar(any(), any(), any(LocalDateTime.class)))
+    when(servicio.obtenerTarifaAplicar(any(), any(), any(OffsetDateTime.class)))
         .thenReturn(new Price());
 
     doReturn(productoDTO).when(mapper).mapeoADTO(any(Price.class),
-        any(LocalDateTime.class));
+        any(OffsetDateTime.class));
 
     ResponseEntity<PriceDTO> response = controlador
-        .obtenerTarifaAplicar("empresaId", "productoId", LocalDateTime.now());
+        .obtenerTarifaAplicar("empresaId", "productoId", OffsetDateTime.now());
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }

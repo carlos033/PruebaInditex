@@ -1,12 +1,12 @@
 package com.inditex.dominio.servicioimpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.inditex.aplicacion.servicio.ServicioPrice;
 import com.inditex.dominio.entidad.Price;
-import com.inditex.dominio.excepciones.ExcepcionInditex;
+import com.inditex.dominio.excepciones.NotContentInditex;
 import com.inditex.dominio.repositorio.RepositorioPrice;
 import lombok.AllArgsConstructor;
 
@@ -19,17 +19,13 @@ public class ServicioImplPrice implements ServicioPrice {
   private RepositorioPrice repositorioPrice;
 
   @Override
-  public Price obtenerTarifaAplicar(String idEmpresa, String productId,
-      LocalDateTime fechaAConsulta) throws ExcepcionInditex {
+  public Price obtenerTarifaAplicar(String idEmpresa,
+      String productId, OffsetDateTime fechaAConsulta) throws NotContentInditex {
     logger.info("Hacemos la llamada al repositorio");
 
-    Price tarifa = repositorioPrice.findPricesWithMaxPriceList(idEmpresa, productId,
-        fechaAConsulta);
-    if (tarifa == null) {
-      logger.info("la tarifa es nula por tanto no existe en la BD");
-
-      throw new ExcepcionInditex(204, "Tarifa no encontrada en la BD");
-    }
-    return tarifa;
+    return repositorioPrice
+        .findPricesWithMaxPriceList(idEmpresa, productId, fechaAConsulta)
+        .orElseThrow(
+            () -> new NotContentInditex(204, "Tarifa no encontrada en la BD"));
   }
 }

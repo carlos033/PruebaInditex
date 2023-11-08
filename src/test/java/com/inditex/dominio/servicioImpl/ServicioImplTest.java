@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.inditex.dominio.entidad.Price;
-import com.inditex.dominio.excepciones.ExcepcionInditex;
+import com.inditex.dominio.excepciones.NotContentInditex;
 import com.inditex.dominio.repositorio.RepositorioPrice;
 import com.inditex.dominio.servicioimpl.ServicioImplPrice;
 
@@ -32,10 +33,10 @@ class ServicioImplTest {
   }
 
   @Test
-  void testListarPrices() throws ExcepcionInditex {
+  void testListarPrices() throws NotContentInditex {
     String idEmpresa = "2";
     String idtarifa = "2";
-    LocalDateTime fechaInicio = LocalDateTime.now();
+    OffsetDateTime fechaInicio = OffsetDateTime.now();
 
     // Crear al menos un tarifa en la lista
     Price tarifa = new Price();
@@ -48,11 +49,11 @@ class ServicioImplTest {
     tarifa.setPriority((short) 1);
     tarifa.setPrecio(22.0);
     tarifa.setCurr("EUR");
-   
+    Optional<Price> optTarifa = Optional.of(tarifa);
 
 
     when(repositorio.findPricesWithMaxPriceList(idEmpresa, idtarifa,
-        fechaInicio)).thenReturn(tarifa);
+        fechaInicio)).thenReturn(optTarifa);
 
     Price resultado =
         servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
@@ -64,22 +65,21 @@ class ServicioImplTest {
   }
 
   @Test
-  void testListarPrices2() throws ExcepcionInditex {
+  void testListarPrices2() throws NotContentInditex {
     String idEmpresa = "2";
     String idtarifa = "2";
-    LocalDateTime fechaInicio = LocalDateTime.now();
-    Price tarifa = new Price(1, idEmpresa, fechaInicio, fechaInicio, "2",
-        idtarifa, (short) 1, 22.0, "EUR");
-   
+    OffsetDateTime fecha = OffsetDateTime.now();
+    Price tarifa = new Price(1, idEmpresa, fecha, fecha, "2", idtarifa,
+        (short) 1, 22.0, "EUR");
+    Optional<Price> optTarifa = Optional.of(tarifa);
 
-    when(repositorio.findPricesWithMaxPriceList(idEmpresa, idtarifa,
-        fechaInicio)).thenReturn(tarifa);
 
-    Price resultado =
-        servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
+    when(repositorio.findPricesWithMaxPriceList(idEmpresa, idtarifa, fecha))
+        .thenReturn(optTarifa);
 
-    verify(repositorio).findPricesWithMaxPriceList(idEmpresa, idtarifa,
-        fechaInicio);
+    Price resultado = servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fecha);
+
+    verify(repositorio).findPricesWithMaxPriceList(idEmpresa, idtarifa, fecha);
 
     assertEquals(tarifa, resultado);
   }
@@ -88,9 +88,10 @@ class ServicioImplTest {
   void testListarPricesNoEncontrado() {
     String idEmpresa = "empresaId";
     String idtarifa = "tarifaId";
-    LocalDateTime fechaInicio = LocalDateTime.now();
+    OffsetDateTime fechaInicio = OffsetDateTime.now();
 
-    assertThrows(ExcepcionInditex.class,
+    assertThrows(NotContentInditex.class,
         () -> servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio));
   }
 }
+

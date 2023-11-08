@@ -9,15 +9,16 @@ info:
 paths:
    /prices/{brandId}/{productId}:
       get:
-         summary: Obtener los productos por ID de empresa, producto y fecha de inicio.
-         description: Obtener todos los productos dado el ID de la empresa, el del producto y la fecha de inicio de su precio.
+         summary: Obtener la tarifa a aplicar por ID de empresa, producto y fecha que se desea consultar.
+         description: Obtener la tarifa a aplicar teniendo en cuenta el ID de la empresa del grupo, el id del producto y la
+            fecha que nos interesa.
          tags:
          - Prices
-         operationId: listarPrices
+         operationId: obtenerTarifaAplicar
          parameters:
          -  in: path
             name: brandId
-            description: ID de la tienda dentro de Inditex
+            description: ID de la tienda dentro del grupo Inditex
             required: true
             schema:
                type: string
@@ -28,8 +29,8 @@ paths:
             schema:
                type: string
          -  in: query
-            name: fechaInicio
-            description: Fecha de consulta
+            name: fechaAConsultar
+            description: Fecha que queremos consultar
             required: true
             schema:
                type: string
@@ -40,11 +41,11 @@ paths:
                content:
                   application/json:
                      schema:
-                        type: array
-                        items:
-                           $ref: '#/components/schemas/PriceDTO'
+                        $ref: '#/components/schemas/PriceDTO'
             '204':
                description: No encontrado
+            '400':
+               description: Error en la url
             '500':
                description: BD no accesible
 components:

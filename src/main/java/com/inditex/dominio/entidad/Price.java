@@ -1,7 +1,7 @@
 package com.inditex.dominio.entidad;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -37,19 +37,24 @@ public class Price implements Serializable {
   private String brandId;
 
   @Schema(name = "startDate",
-      description = "Fecha en la que se empieza a aplicar"
-          + " el precio tarifa indicado formato yyyy-MM-ddTHH:mm:ss",
-      example = "2023-05-01T14:30:00")
+      description = """
+          Fecha en la que se empieza a aplicar\
+           aplicacion de la tarifa\
+          """,
+      example = "2023-05-01T14:30:00Z")
   @JsonFormat(shape = JsonFormat.Shape.STRING,
-      pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  private LocalDateTime startDate;
+      pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private OffsetDateTime startDate;
 
-  @Schema(name = "endDate", description = "fechas en la que se finaliza la"
-      + " aplicacion del precio tarifa indicado formato yyyy-MM-ddTHH:mm:ss",
+  @Schema(name = "endDate",
+      description = """
+          fechas en la que se finaliza la\
+           aplicacion de la tarifa\
+          """,
       example = "2023-05-01T14:30:00")
   @JsonFormat(shape = JsonFormat.Shape.STRING,
-      pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  private LocalDateTime endDate;
+      pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private OffsetDateTime endDate;
 
   @Schema(name = "price_list",
       description = " Identificador de la tarifa de precios " + "aplicable",

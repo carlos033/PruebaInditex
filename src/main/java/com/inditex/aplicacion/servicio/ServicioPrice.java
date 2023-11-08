@@ -1,12 +1,12 @@
 package com.inditex.aplicacion.servicio;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.inditex.dominio.entidad.Price;
-import com.inditex.dominio.excepciones.ExcepcionInditex;
+import com.inditex.dominio.excepciones.NotContentInditex;
 
 public interface ServicioPrice {
 
   Price obtenerTarifaAplicar(String idEmpresa, String productId,
-      LocalDateTime fechaInicio) throws ExcepcionInditex;
+      OffsetDateTime fechaInicio) throws NotContentInditex;
 
 }
