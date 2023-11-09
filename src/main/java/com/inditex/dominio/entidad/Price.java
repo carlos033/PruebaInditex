@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table
+@Table(name = "Price")
 @Data
 @Entity
 @NoArgsConstructor
@@ -24,11 +24,14 @@ import lombok.NoArgsConstructor;
 public class Price implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @NotNull
-  @Schema(name = "id", description = "Id de la tarifa", example = "1")
-  private int id;
+  @Schema(name = "price_list",
+      description = " Identificador de la tarifa de precios " + "aplicable",
+      example = "2")
+  private int priceList;
 
   @NotNull
   @Schema(name = "brand_id",
@@ -37,37 +40,26 @@ public class Price implements Serializable {
   private String brandId;
 
   @Schema(name = "startDate",
-      description = """
-          Fecha en la que se empieza a aplicar\
-           aplicacion de la tarifa\
-          """,
+      description = " Fecha en la que se empieza a aplicar aplicacion de la tarifa",
       example = "2023-05-01T14:30:00Z")
   @JsonFormat(shape = JsonFormat.Shape.STRING,
       pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private OffsetDateTime startDate;
 
   @Schema(name = "endDate",
-      description = """
-          fechas en la que se finaliza la\
-           aplicacion de la tarifa\
-          """,
+      description = " Fecha en la que se finaliza la aplicacion de la tarifa",
       example = "2023-05-01T14:30:00")
   @JsonFormat(shape = JsonFormat.Shape.STRING,
       pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private OffsetDateTime endDate;
-
-  @Schema(name = "price_list",
-      description = " Identificador de la tarifa de precios " + "aplicable",
-      example = "2")
-  private String priceList;
 
   @Column(name = "product_id")
   @Schema(name = "productID", description = "Identificador código de producto",
       example = "35455")
   private String productID;
 
-  @Schema(name = "priority", description = "prioridad del precio",
-      example = "1")
+  @Schema(name = "priority",
+      description = "prioridad de aplicacion de la tarifa", example = "1")
   private short priority;
 
   @Column(name = "price")

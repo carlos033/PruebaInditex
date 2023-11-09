@@ -14,5 +14,4 @@ public class DatabaseError extends RuntimeException {
     super(msg);
     this.codigoError = codigoError;
   }
-
 }

@@ -10,7 +10,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ControladorPriceTestIntegracion {
+class TestIntegracion {
 
   @LocalServerPort
   private int port;
@@ -21,10 +21,10 @@ class ControladorPriceTestIntegracion {
   }
 
   @Test
-  void testIntegrationCase1() {
+  void testCase1() {
     LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 14, 10, 0, 0);
     DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String fechaAConsultar = fechaHora.format(formatter);
 
     given().pathParam("brandId", "1").pathParam("productId", "35455")
@@ -33,10 +33,10 @@ class ControladorPriceTestIntegracion {
   }
 
   @Test
-  void testIntegrationCase2() {
+  void testCase2() {
     LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 14, 16, 0, 0);
     DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String fechaAConsultar = fechaHora.format(formatter);
 
     given().pathParam("brandId", "1").pathParam("productId", "35455")
@@ -45,10 +45,10 @@ class ControladorPriceTestIntegracion {
   }
 
   @Test
-  void testIntegrationCase3() {
+  void testCase3() {
     LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 14, 21, 0, 0);
     DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String fechaAConsultar = fechaHora.format(formatter);
 
     given().pathParam("brandId", "1").pathParam("productId", "35455")
@@ -57,10 +57,10 @@ class ControladorPriceTestIntegracion {
   }
 
   @Test
-  void testIntegrationCase4() {
+  void testCase4() {
     LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 15, 10, 0, 0);
     DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String fechaAConsultar = fechaHora.format(formatter);
 
     given().pathParam("brandId", "1").pathParam("productId", "35455")
@@ -70,10 +70,10 @@ class ControladorPriceTestIntegracion {
   }
 
   @Test
-  void testIntegrationCase5() {
+  void testCase5() {
     LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 16, 21, 0, 0);
     DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String fechaAConsultar = fechaHora.format(formatter);
 
     given().pathParam("brandId", "1").pathParam("productId", "35455")

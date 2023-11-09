@@ -40,11 +40,10 @@ class ServicioImplTest {
 
     // Crear al menos un tarifa en la lista
     Price tarifa = new Price();
-    tarifa.setId(1);
     tarifa.setBrandId(idEmpresa);
     tarifa.setStartDate(fechaInicio);
     tarifa.setEndDate(fechaInicio);
-    tarifa.setPriceList("2");
+    tarifa.setPriceList(2);
     tarifa.setProductID(idtarifa);
     tarifa.setPriority((short) 1);
     tarifa.setPrecio(22.0);
@@ -52,14 +51,13 @@ class ServicioImplTest {
     Optional<Price> optTarifa = Optional.of(tarifa);
 
 
-    when(repositorio.findPricesWithMaxPriceList(idEmpresa, idtarifa,
-        fechaInicio)).thenReturn(optTarifa);
+    when(repositorio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio))
+        .thenReturn(optTarifa);
 
     Price resultado =
         servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
 
-    verify(repositorio).findPricesWithMaxPriceList(idEmpresa, idtarifa,
-        fechaInicio);
+    verify(repositorio).obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
 
     assertEquals(tarifa, resultado);
   }
@@ -69,17 +67,17 @@ class ServicioImplTest {
     String idEmpresa = "2";
     String idtarifa = "2";
     OffsetDateTime fecha = OffsetDateTime.now();
-    Price tarifa = new Price(1, idEmpresa, fecha, fecha, "2", idtarifa,
-        (short) 1, 22.0, "EUR");
+    Price tarifa =
+        new Price(2, idEmpresa, fecha, fecha, idtarifa, (short) 1, 22.0, "EUR");
     Optional<Price> optTarifa = Optional.of(tarifa);
 
 
-    when(repositorio.findPricesWithMaxPriceList(idEmpresa, idtarifa, fecha))
+    when(repositorio.obtenerTarifaAplicar(idEmpresa, idtarifa, fecha))
         .thenReturn(optTarifa);
 
     Price resultado = servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fecha);
 
-    verify(repositorio).findPricesWithMaxPriceList(idEmpresa, idtarifa, fecha);
+    verify(repositorio).obtenerTarifaAplicar(idEmpresa, idtarifa, fecha);
 
     assertEquals(tarifa, resultado);
   }

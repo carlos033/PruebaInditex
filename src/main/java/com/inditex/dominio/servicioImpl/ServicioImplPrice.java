@@ -19,13 +19,12 @@ public class ServicioImplPrice implements ServicioPrice {
   private RepositorioPrice repositorioPrice;
 
   @Override
-  public Price obtenerTarifaAplicar(String idEmpresa,
-      String productId, OffsetDateTime fechaAConsulta) throws NotContentInditex {
+  public Price obtenerTarifaAplicar(String idEmpresa, String productId,
+      OffsetDateTime fechaAConsulta) throws NotContentInditex {
     logger.info("Hacemos la llamada al repositorio");
 
     return repositorioPrice
-        .findPricesWithMaxPriceList(idEmpresa, productId, fechaAConsulta)
-        .orElseThrow(
+        .obtenerTarifaAplicar(idEmpresa, productId, fechaAConsulta).orElseThrow(
             () -> new NotContentInditex(204, "Tarifa no encontrada en la BD"));
   }
 }

@@ -32,11 +32,15 @@ class ControladorErroresTest {
   @Test
   void testItemNotFoundHandler() {
     // Crear una instancia de NotContentInditex
-    NotContentInditex exception = new NotContentInditex(204, "Not content");
+    NotContentInditex excepcion = new NotContentInditex(204, "Not content");
+    ResponseEntity<Object> responseEntity =
+        controladorErrores.itemNotFoundHandler(excepcion);
 
     // Obtener el mensaje de error de la excepción y verificar que
     // coincida con la cadena de error
-    String mensajeDeError = exception.getMessage();
+    String mensajeDeError = excepcion.getMessage();
+    assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
+
     assertEquals("Not content", mensajeDeError);
   }
 

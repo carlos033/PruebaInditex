@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 public class ControladorPrice implements PricesApi {
-
   private static final Logger logger =
       LoggerFactory.getLogger(ControladorPrice.class);
   private ServicioPrice servicioBusquedaTarifa;
