@@ -14,20 +14,18 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 public class ControladorPrice implements PricesApi {
-  private static final Logger logger =
-      LoggerFactory.getLogger(ControladorPrice.class);
+  private static final Logger logger = LoggerFactory.getLogger(ControladorPrice.class);
   private ServicioPrice servicioBusquedaTarifa;
 
   private MapperPrice mapper;
 
   @Override
-  public ResponseEntity<PriceDTO> obtenerTarifaAplicar(String brandId,
-      String productId, OffsetDateTime fechaAConsultar) {
-    logger
-        .info("Llamada al servicio, mapeamos la repuesta para mostrar el DTO");
-    return ResponseEntity.ok(
-        mapper.mapeoADTO(servicioBusquedaTarifa.obtenerTarifaAplicar(brandId,
-            productId, fechaAConsultar), fechaAConsultar));
+  public ResponseEntity<PriceDTO> obtenerTarifaAplicar(String brandId, String productId,
+      OffsetDateTime fechaAConsultar) {
+    logger.info("Llamada al servicio, mapeamos la repuesta para mostrar el DTO");
+    return ResponseEntity.ok(mapper.mapeoADTO(
+        servicioBusquedaTarifa.obtenerTarifaAplicar(brandId, productId, fechaAConsultar),
+        fechaAConsultar));
   }
 
 }

@@ -9,9 +9,10 @@ public class NotContentInditex extends RuntimeException {
 
   private static final long serialVersionUID = 3L;
   private final int codigoError;
+  private String mensaje;
 
-  public NotContentInditex(int codigoError, String msg) {
-    super(msg);
+  public NotContentInditex(int codigoError, String mensaje) {
     this.codigoError = codigoError;
+    this.mensaje = mensaje;
   }
 }

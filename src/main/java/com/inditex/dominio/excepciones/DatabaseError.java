@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DatabaseError extends RuntimeException {
+public class DatabaseError extends InternalError {
 
   private static final long serialVersionUID = 4L;
   private final int codigoError;

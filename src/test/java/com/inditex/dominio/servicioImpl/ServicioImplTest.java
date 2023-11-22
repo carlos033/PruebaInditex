@@ -51,11 +51,9 @@ class ServicioImplTest {
     Optional<Price> optTarifa = Optional.of(tarifa);
 
 
-    when(repositorio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio))
-        .thenReturn(optTarifa);
+    when(repositorio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio)).thenReturn(optTarifa);
 
-    Price resultado =
-        servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
+    Price resultado = servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
 
     verify(repositorio).obtenerTarifaAplicar(idEmpresa, idtarifa, fechaInicio);
 
@@ -67,13 +65,11 @@ class ServicioImplTest {
     String idEmpresa = "2";
     String idtarifa = "2";
     OffsetDateTime fecha = OffsetDateTime.now();
-    Price tarifa =
-        new Price(2, idEmpresa, fecha, fecha, idtarifa, (short) 1, 22.0, "EUR");
+    Price tarifa = new Price(2, idEmpresa, fecha, fecha, idtarifa, (short) 1, 22.0, "EUR");
     Optional<Price> optTarifa = Optional.of(tarifa);
 
 
-    when(repositorio.obtenerTarifaAplicar(idEmpresa, idtarifa, fecha))
-        .thenReturn(optTarifa);
+    when(repositorio.obtenerTarifaAplicar(idEmpresa, idtarifa, fecha)).thenReturn(optTarifa);
 
     Price resultado = servicio.obtenerTarifaAplicar(idEmpresa, idtarifa, fecha);
 

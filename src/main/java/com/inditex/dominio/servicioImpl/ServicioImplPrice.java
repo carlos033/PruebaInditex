@@ -13,8 +13,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class ServicioImplPrice implements ServicioPrice {
-  private static final Logger logger =
-      LoggerFactory.getLogger(ServicioImplPrice.class);
+  private static final Logger logger = LoggerFactory.getLogger(ServicioImplPrice.class);
 
   private RepositorioPrice repositorioPrice;
 
@@ -23,8 +22,7 @@ public class ServicioImplPrice implements ServicioPrice {
       OffsetDateTime fechaAConsulta) throws NotContentInditex {
     logger.info("Hacemos la llamada al repositorio");
 
-    return repositorioPrice
-        .obtenerTarifaAplicar(idEmpresa, productId, fechaAConsulta).orElseThrow(
-            () -> new NotContentInditex(204, "Tarifa no encontrada en la BD"));
+    return repositorioPrice.obtenerTarifaAplicar(idEmpresa, productId, fechaAConsulta)
+        .orElseThrow(() -> new NotContentInditex(204, "Tarifa no encontrada en la BD"));
   }
 }

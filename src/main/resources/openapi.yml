@@ -52,11 +52,7 @@ components:
    schemas:
       PriceDTO:
          type: object
-         properties:
-            priceList:
-               description: id de la tarifa
-               type: integer
-               example: 3
+         properties:            
             brandId:
                description: id de la empresa del grupo
                type: string

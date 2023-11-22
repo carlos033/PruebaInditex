@@ -1,6 +1,7 @@
 package com.inditex.dominio.excepciones;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +21,31 @@ class NotContentInditexTest {
     });
 
     // Verificar si el mensaje y el código de error son los esperados
-    assertEquals(mensaje, exception.getMessage());
+    assertEquals(mensaje, exception.getMensaje());
     assertEquals(codigoError, exception.getCodigoError());
+  }
+
+
+  @Test
+  void testEquals() {
+    NotContentInditex instance1 = new NotContentInditex(204, "Not content");
+    NotContentInditex instance2 = new NotContentInditex(204, "Not content");
+
+    // Verificar que las instancias sean iguales
+    assertEquals(instance1, instance2);
+
+    // Modificar una propiedad y verificar que las instancias sean diferentes
+    instance2.setMensaje("Otro mensaje");
+    assertNotEquals(instance1, instance2);
+  }
+
+  @Test
+  void testHashCode() {
+    NotContentInditex instance1 = new NotContentInditex(204, "Not content");
+    NotContentInditex instance2 = new NotContentInditex(204, "Not content");
+
+    // Verificar que los códigos hash sean iguales
+    assertEquals(instance1.hashCode(), instance2.hashCode());
   }
 
 

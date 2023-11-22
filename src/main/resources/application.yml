@@ -1,30 +1,30 @@
 server:
-  error:
-    include-stacktrace: never
+   error:
+      include-stacktrace: never
 logging:
-  level:
-    org:
-      hibernate:
-        type: trace
+   level:
+      org:
+         hibernate:
+            type: trace
 spring:
-  datasource:
-     driver-class-name: org.h2.Driver
-     url: jdbc:h2:mem:testdb  
-     username: sa            
-     password:              
-     
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    open-in-view: false
-    
-  h2:
-    console:
-      enabled: true
+   datasource:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb
+      username: sa
+      password: null
+
+   jpa:
+      database-platform: org.hibernate.dialect.H2Dialect
+      hibernate:
+         ddl-auto: update
+      show-sql: true
+      open-in-view: false
+
+   h2:
+      console:
+         enabled: true
 
 springdoc:
-  swagger-ui:
-    enabled: true
-    path: /inditex.html
+   swagger-ui:
+      enabled: true
+      path: /inditex.html

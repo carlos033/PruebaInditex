@@ -1,10 +1,13 @@
 package com.inditex.estructura.controlador;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import com.inditex.dominio.excepciones.DatabaseError;
 import com.inditex.dominio.excepciones.ErrorResponse;
 import com.inditex.dominio.excepciones.NotContentInditex;
 import com.inditex.infraestructura.controlador.ControladorErrores;
@@ -33,15 +37,10 @@ class ControladorErroresTest {
   void testItemNotFoundHandler() {
     // Crear una instancia de NotContentInditex
     NotContentInditex excepcion = new NotContentInditex(204, "Not content");
-    ResponseEntity<Object> responseEntity =
-        controladorErrores.itemNotFoundHandler(excepcion);
+    ResponseEntity<Void> responseEntity = controladorErrores.itemNotFoundHandler(excepcion);
 
-    // Obtener el mensaje de error de la excepción y verificar que
-    // coincida con la cadena de error
-    String mensajeDeError = excepcion.getMessage();
     assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-
-    assertEquals("Not content", mensajeDeError);
+    assertNull(responseEntity.getBody());
   }
 
 
@@ -62,12 +61,11 @@ class ControladorErroresTest {
 
     // Configurar el comportamiento de getBindingResult() para devolver el
     // BindingResult simulado
-    when(methodArgumentNotValidException.getBindingResult())
-        .thenReturn(bindingResult);
+    when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
     // Llamar al método handleMethodArgumentNotValid
-    ResponseEntity<Object> result = controladorErrores
-        .handleMethodArgumentNotValid(methodArgumentNotValidException);
+    ResponseEntity<Object> result =
+        controladorErrores.handleMethodArgumentNotValid(methodArgumentNotValidException);
 
     // Verificar que el resultado es un ResponseEntity con el mensaje de
     // error y HttpStatus.BAD_REQUEST
@@ -77,36 +75,19 @@ class ControladorErroresTest {
     assertEquals(2, errorResponse.getDetalles().size());
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   void testHandleMethoInternalError() {
-    // Crear una instancia de MethodArgumentNotValidException simulada
-    MethodArgumentNotValidException methodArgumentNotValidException =
-        mock(MethodArgumentNotValidException.class);
+    DatabaseError ex = new DatabaseError(500, "Mensaje de error");
+    ResponseEntity<Object> response = controladorErrores.handleMethoInternalError(ex);
 
-    // Crear un objeto BindingResult simulado y configurar su
-    // comportamiento
-    BindingResult bindingResult = mock(BindingResult.class);
-    List<ObjectError> errors = new ArrayList<>();
-    errors.add(new ObjectError("objName", "Error 1"));
-    errors.add(new ObjectError("objName", "Error 2"));
-
-    // Configurar el comportamiento de getBindingResult() para devolver el
-    // BindingResult simulado
-    when(methodArgumentNotValidException.getBindingResult())
-        .thenReturn(bindingResult);
-
-    // Configurar el comportamiento de getAllErrors() en el objeto
-    // BindingResult simulado
-    when(bindingResult.getAllErrors()).thenReturn(errors);
-
-    // Llamar al método handleMethoInternalError
-    ResponseEntity<Object> result = controladorErrores
-        .handleMethoInternalError(methodArgumentNotValidException);
-
-    // Verificar que el resultado es un ResponseEntity con el mensaje de
-    // error y HttpStatus.INTERNAL_SERVER_ERROR
-    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
-    ErrorResponse errorResponse = (ErrorResponse) result.getBody();
-    assertEquals(errors.size(), errorResponse.getDetalles().size());
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    Map<String, Object> responseBody = (Map<String, Object>) response.getBody();
+    assertEquals(500, responseBody.get("status"));
+    assertEquals("Internal Server Error", responseBody.get("error"));
+    assertEquals("Ha ocurrido un error interno. Por favor, contacte con el administrador.",
+        responseBody.get("message"));
+    assertEquals(LocalDateTime.class, responseBody.get("timestamp").getClass());
   }
+
 }

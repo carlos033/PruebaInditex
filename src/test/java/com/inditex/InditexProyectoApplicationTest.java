@@ -10,9 +10,7 @@ class InditexProyectoApplicationTest {
 
   @Test
   void test() {
-    InditexProyectoApplication
-        .main(new String[] {"--spring.main.web-environment=false",
-            "--spring.autoconfigure.exclude=blahblahblah",
-        });
+    InditexProyectoApplication.main(new String[] {"--spring.main.web-environment=false",
+        "--spring.autoconfigure.exclude=blahblahblah",});
   }
 }
