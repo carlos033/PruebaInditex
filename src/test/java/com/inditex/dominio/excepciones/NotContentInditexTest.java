@@ -35,8 +35,8 @@ class NotContentInditexTest {
     assertEquals(instance1, instance2);
 
     // Modificar una propiedad y verificar que las instancias sean diferentes
-    instance2.setMensaje("Otro mensaje");
-    assertNotEquals(instance1, instance2);
+    NotContentInditex instance3 = new NotContentInditex(205, "Not content");
+    assertNotEquals(instance1, instance3);
   }
 
   @Test

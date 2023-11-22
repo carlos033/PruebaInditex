@@ -29,8 +29,22 @@ class TestIntegracion {
   }
 
   @Test
-  void testCase1() {
+  void test() {
     LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 14, 10, 0, 0);
+    LocalDateTime fechaHora2 = LocalDateTime.of(2020, 6, 14, 16, 0, 0);
+    LocalDateTime fechaHora3 = LocalDateTime.of(2020, 6, 14, 21, 0, 0);
+    LocalDateTime fechaHora4 = LocalDateTime.of(2020, 6, 15, 10, 0, 0);
+    LocalDateTime fechaHora5 = LocalDateTime.of(2020, 6, 16, 21, 0, 0);
+
+    testCase1(fechaHora);
+    testCase1(fechaHora2);
+    testCase1(fechaHora3);
+    testCase1(fechaHora4);
+    testCase1(fechaHora5);
+
+  }
+
+  void testCase1(LocalDateTime fechaHora) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String fechaAConsultar = fechaHora.format(formatter);
 
@@ -48,80 +62,4 @@ class TestIntegracion {
 
   }
 
-  @Test
-  void testCase2() {
-    LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 14, 16, 0, 0);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    String fechaAConsultar = fechaHora.format(formatter);
-
-    given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .then().statusCode(200);
-    Response response = given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .andReturn();
-    assertNotNull(response);
-    PriceDTO priceDTO = response.as(PriceDTO.class);
-    assertEquals("1", priceDTO.getBrandId());
-    assertEquals("35455", priceDTO.getProductID());
-    assertEquals(fechaAConsultar, priceDTO.getConsultationDate().format(formatter));
-  }
-
-  @Test
-  void testCase3() {
-    LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 14, 21, 0, 0);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    String fechaAConsultar = fechaHora.format(formatter);
-
-    given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .then().statusCode(200);
-    Response response = given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .andReturn();
-    assertNotNull(response);
-    PriceDTO priceDTO = response.as(PriceDTO.class);
-    assertEquals("1", priceDTO.getBrandId());
-    assertEquals("35455", priceDTO.getProductID());
-    assertEquals(fechaAConsultar, priceDTO.getConsultationDate().format(formatter));
-  }
-
-  @Test
-  void testCase4() {
-    LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 15, 10, 0, 0);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    String fechaAConsultar = fechaHora.format(formatter);
-
-    given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .then().statusCode(200);
-    Response response = given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .andReturn();
-    assertNotNull(response);
-    PriceDTO priceDTO = response.as(PriceDTO.class);
-    assertEquals("1", priceDTO.getBrandId());
-    assertEquals("35455", priceDTO.getProductID());
-    assertEquals(fechaAConsultar, priceDTO.getConsultationDate().format(formatter));
-
-  }
-
-  @Test
-  void testCase5() {
-    LocalDateTime fechaHora = LocalDateTime.of(2020, 6, 16, 21, 0, 0);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    String fechaAConsultar = fechaHora.format(formatter);
-
-    given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .then().statusCode(200);
-    Response response = given().pathParam("brandId", "1").pathParam("productId", "35455")
-        .param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}")
-        .andReturn();
-    assertNotNull(response);
-    PriceDTO priceDTO = response.as(PriceDTO.class);
-    assertEquals("1", priceDTO.getBrandId());
-    assertEquals("35455", priceDTO.getProductID());
-    assertEquals(fechaAConsultar, priceDTO.getConsultationDate().format(formatter));
-  }
 }
