@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.5</version>
+		<version>3.2.4</version>
 		<relativePath />
 	</parent>
 	<groupId>com.inditex</groupId>
@@ -17,6 +17,14 @@
 	<properties>
 		<java.version>17</java.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<java.version>17</java.version>
+		<org.mapstruct.version>1.6.0.Beta1</org.mapstruct.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<springdoc>2.4.0</springdoc>
+		<auth0>4.4.0</auth0>
+		<openapitools>7.4.0</openapitools>
+		<lombok>1.18.30</lombok>
+		<projectlombok>0.2.0</projectlombok>
 	</properties>
 	<dependencies>
 		<!-- Spring Boot Starter Dependencies -->
@@ -37,7 +45,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.2.0</version>
+			<version>${springdoc}</version>
 		</dependency>
 		<!-- Test integracion -->
 		<dependency>
@@ -72,6 +80,19 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>${auth0}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -92,7 +113,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>7.0.1</version>
+				<version>${openapitools}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -106,7 +127,7 @@
 							<configOptions>
 								<documentationProvider>springdoc</documentationProvider>
 								<modelPackage> com.inditex.aplicacion.dto</modelPackage>
-								<apiPackage>com.inditex.aplicacion.api</apiPackage>
+								<apiPackage>com.inditex.presentacion.api</apiPackage>
 								<openApiNullable>false</openApiNullable>
 								<interfaceOnly>true</interfaceOnly>
 								<useSpringBoot3>true</useSpringBoot3>
@@ -117,7 +138,10 @@
 								<useJakartaEe>true</useJakartaEe>
 								<additionalModelTypeAnnotations>
 									@lombok.NoArgsConstructor
-									@lombok.AllArgsConstructor</additionalModelTypeAnnotations>
+									@lombok.AllArgsConstructor
+									@lombok.Builder
+									@lombok.Data
+								</additionalModelTypeAnnotations>
 							</configOptions>
 						</configuration>
 					</execution>
@@ -136,12 +160,12 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.30</version>
+							<version>${lombok}</version>
 						</path>
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>0.2.0</version>
+							<version>${projectlombok}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>

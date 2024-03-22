@@ -1,8 +1,9 @@
-package com.inditex.infraestructura.controlador;
+package com.inditex.presentacion.controlador;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import com.inditex.dominio.excepciones.DatabaseError;
 import com.inditex.dominio.excepciones.ErrorResponse;
 import com.inditex.dominio.excepciones.NotContentInditex;

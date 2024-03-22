@@ -1,4 +1,4 @@
-package com.inditex.estructura.controlador;
+package com.inditex.presentacion.controlador;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,9 +8,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.time.OffsetDateTime;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +19,11 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import com.inditex.aplicacion.dto.PriceDTO;
 import com.inditex.aplicacion.mapper.MapperPrice;
-import com.inditex.dominio.entidad.Price;
 import com.inditex.dominio.excepciones.NotContentInditex;
 import com.inditex.dominio.servicioimpl.ServicioImplPrice;
-import com.inditex.infraestructura.controlador.ControladorPrice;
+import com.inditex.infraestructura.entidad.Price;
 
 @ExtendWith(MockitoExtension.class)
 class ControladorPriceTest {
