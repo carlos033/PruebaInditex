@@ -48,11 +48,35 @@ paths:
                description: Error en la url
             '500':
                description: BD no accesible
+   /autenticacion/login:
+      post:
+         summary: Create an authentication token
+         description: Authenticates a user and generates a JWT token.
+         operationId: autenticacionLoginPost
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     $ref: '#/components/schemas/JwtRequest'
+         responses:
+            '201':
+               description: Token created
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/JwtResponse'
+            '204':
+               description: Invalid credentials
+            '400':
+               description: Url error
+            '500':
+               description: DB not accessible
 components:
    schemas:
       PriceDTO:
          type: object
-         properties:            
+         properties:
             brandId:
                description: id de la empresa del grupo
                type: string
@@ -74,3 +98,19 @@ components:
                description: moneda
                type: string
                example: EUR
+      JwtResponse:
+         type: object
+         properties:
+            jwttoken:
+               type: string
+      JwtRequest:
+         type: object
+         properties:
+            identificator:
+               type: string
+               description: Username
+               example: Pedro69
+            password:
+               type: string
+               description: User password
+               example: 1234
