@@ -1,0 +1,11 @@
+.settings
+classes
+inditex
+surefire-reports
+default-compile
+default-testCompile
+openapi
+MANIFEST.MF
+/*.project
+*.factorypath
+*.classpath
