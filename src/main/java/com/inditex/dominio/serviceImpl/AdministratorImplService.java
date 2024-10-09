@@ -1,4 +1,4 @@
-package com.inditex.dominio.servicioimpl;
+package com.inditex.dominio.serviceImpl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

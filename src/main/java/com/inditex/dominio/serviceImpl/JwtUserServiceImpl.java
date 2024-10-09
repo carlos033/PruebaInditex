@@ -1,4 +1,4 @@
-package com.inditex.dominio.servicioimpl;
+package com.inditex.dominio.serviceImpl;
 
 import java.util.Collections;
 import org.springframework.security.core.userdetails.User;

@@ -21,11 +21,11 @@ import com.inditex.infraestructura.entidad.Logable;
  * Carlos Diaz https://github.com/carlos033?tab=repositories
  */
 @Component
-public class JwtToken{
+public class JwtToken {
 	private static final String USER_NAME = "userName";
 	private static final String JWT_DECODE_EXCEPTION = "Error decoding the token";
 	private static final String INVALID_CLAIM_EXCEPTION =
-			"The 'user' object is not of the expected type";
+	        "The 'user' object is not of the expected type";
 	private static final String USER = "user";
 	private String secret;
 
@@ -94,13 +94,12 @@ public class JwtToken{
 
 			if (!usuarioClaims.isEmpty()) {
 				return JWT.create().withSubject(subject).withIssuedAt(Date.from(now))
-						.withExpiresAt(Date.from(expirationTime)).withClaim(USER, usuarioClaims)
-						.sign(algorithm);
+				        .withExpiresAt(Date.from(expirationTime))
+				        .withClaim(USER, usuarioClaims).sign(algorithm);
 			}
 		}
 		throw new InvalidClaimException(INVALID_CLAIM_EXCEPTION);
 	}
-
 
 	public Boolean validateToken(String token, String expectedSubject) {
 		final String identifier = getTokenIdentifier(token);

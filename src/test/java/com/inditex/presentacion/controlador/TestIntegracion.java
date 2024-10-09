@@ -45,17 +45,20 @@ class TestIntegracion {
 	}
 
 	void testCase1(LocalDateTime fechaHora) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		DateTimeFormatter formatter =
+		        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		String fechaAConsultar = fechaHora.format(formatter);
 
-		given().pathParam("brandId", "1").pathParam("productId", "35455").param("fechaAConsultar", fechaAConsultar)
-				.when().get("/prices/{brandId}/{productId}").then().statusCode(200);
-		Response response = given().pathParam("brandId", "1").pathParam("productId", "35455")
-				.param("fechaAConsultar", fechaAConsultar).when().get("/prices/{brandId}/{productId}").andReturn();
+		given().pathParam("brandId", "1").pathParam("productId", "35455")
+		        .param("fechaAConsultar", fechaAConsultar).when()
+		        .get("/prices/{brandId}/{productId}").then().statusCode(200);
+		Response response = given().pathParam("brandId", "1")
+		        .pathParam("productId", "35455").param("fechaAConsultar", fechaAConsultar)
+		        .when().get("/prices/{brandId}/{productId}").andReturn();
 		assertNotNull(response);
 		PriceDTO priceDTO = response.as(PriceDTO.class);
 		assertEquals("1", priceDTO.getBrandId());
-		assertEquals("35455", priceDTO.getProductID());
+		assertEquals("35455", priceDTO.getProductId());
 		assertEquals(fechaAConsultar, priceDTO.getConsultationDate().format(formatter));
 
 	}

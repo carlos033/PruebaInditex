@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.inditex.dominio.excepciones.NotContentInditex;
 import com.inditex.dominio.repositorio.RepositorioPrice;
-import com.inditex.dominio.servicioimpl.ServicioImplPrice;
+import com.inditex.dominio.serviceImpl.ServicioImplPrice;
 import com.inditex.infraestructura.entidad.Price;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +47,7 @@ class ServicioImplTest {
 		tarifa.setStartDate(fechaInicio);
 		tarifa.setEndDate(fechaInicio);
 		tarifa.setPriceList(2);
-		tarifa.setProductID(idtarifa);
+		tarifa.setProductId(idtarifa);
 		tarifa.setPriority((short) 1);
 		tarifa.setPrecio(22.0);
 		tarifa.setCurr("EUR");

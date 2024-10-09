@@ -1,4 +1,4 @@
-package com.inditex.dominio.servicioimpl;
+package com.inditex.dominio.serviceImpl;
 
 import java.time.OffsetDateTime;
 import org.slf4j.Logger;

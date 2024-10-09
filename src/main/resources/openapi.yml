@@ -1,116 +1,147 @@
 openapi: 3.0.3
 info:
-   title: Inditex API
-   version: '1.0'
-   description: Información de stock de Inditex
-   contact:
-      name: Carlos Diaz
-      email: cdr8725@gmail.com
+  title: Inditex API
+  description: Información de stock de Inditex
+  contact:
+    name: Carlos Diaz
+    email: cdr8725@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 3.0.0
+servers:
+  - url: http://localhost:8080/inditex.html
+tags:
+  - name: Prices
+    description: stock en tienda
+  - name: Login
+    description: Operacion de login
+security:
+  - BearerToken: []
 paths:
-   /prices/{brandId}/{productId}:
-      get:
-         summary: Obtener la tarifa a aplicar por ID de empresa, producto y fecha que se desea consultar.
-         description: Obtener la tarifa a aplicar teniendo en cuenta el ID de la empresa del grupo, el id del producto y la
-            fecha que nos interesa.
-         tags:
-         - Prices
-         operationId: obtenerTarifaAplicar
-         parameters:
-         -  in: path
-            name: brandId
-            description: ID de la tienda dentro del grupo Inditex
-            required: true
+  /prices/{brandId}/{productId}:
+    get:
+      tags:
+        - Prices
+      summary: Obtener la tarifa a aplicar por ID de empresa, producto y fecha que se desea consultar.
+      description: Obtener la tarifa a aplicar teniendo en cuenta el ID de la empresa del grupo, el id del producto y la fecha que nos interesa.
+      operationId: obtenerTarifaAplicar
+      parameters:
+        - in: path
+          name: brandId
+          description: ID de la tienda dentro del grupo Inditex
+          required: true
+          schema:
+            type: string
+          example: '1'
+        - in: path
+          name: productId
+          description: ID del producto buscado
+          required: true
+          schema:
+            type: string
+          example: '1565'
+        - in: query
+          name: fechaAConsultar
+          description: Fecha que queremos consultar
+          required: true
+          schema:
+            type: string
+            format: date-time
+          example: '2023-05-01T14:30:00Z'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceDTO'
+              example:
+                brandId: '1'
+                productId: '1565'
+                consultationDate: '2023-05-01T14:30:00Z'
+                precio: 19.99
+                curr: EUR
+        '400':
+          description: Error en la URL
+        '204':
+          description: No encontrado
+        '422':
+          description: Base de datos no accesible
+        '500':
+          description: Internal Server Error
+  /autenticacion/login:
+    post:
+      tags:
+        - Login
+      summary: Crear un token de autenticación
+      description: Autentica un usuario y genera un token JWT.
+      operationId: AutenticacionLoginPost
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
             schema:
-               type: string
-         -  in: path
-            name: productId
-            description: ID del producto buscado
-            required: true
-            schema:
-               type: string
-         -  in: query
-            name: fechaAConsultar
-            description: Fecha que queremos consultar
-            required: true
-            schema:
-               type: string
-               format: date-time
-         responses:
-            '200':
-               description: OK
-               content:
-                  application/json:
-                     schema:
-                        $ref: '#/components/schemas/PriceDTO'
-            '204':
-               description: No encontrado
-            '400':
-               description: Error en la url
-            '500':
-               description: BD no accesible
-   /autenticacion/login:
-      post:
-         summary: Create an authentication token
-         description: Authenticates a user and generates a JWT token.
-         operationId: autenticacionLoginPost
-         requestBody:
-            required: true
-            content:
-               application/json:
-                  schema:
-                     $ref: '#/components/schemas/JwtRequest'
-         responses:
-            '201':
-               description: Token created
-               content:
-                  application/json:
-                     schema:
-                        $ref: '#/components/schemas/JwtResponse'
-            '204':
-               description: Invalid credentials
-            '400':
-               description: Url error
-            '500':
-               description: DB not accessible
+              $ref: '#/components/schemas/JwtRequest'
+            example:
+              identificator: 'Pedro69'
+              password: '1234'
+      responses:
+        '201':
+          description: Token creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+              example:
+                jwttoken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Sm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5'
+        '204':
+          description: Credenciales inválidas
+        '400':
+          description: Error en la URL
+        '500':
+          description: Base de datos no accesible
 components:
-   schemas:
-      PriceDTO:
-         type: object
-         properties:
-            brandId:
-               description: id de la empresa del grupo
-               type: string
-               example: '1'
-            productID:
-               description: id del producto
-               type: string
-               example: '1565'
-            consultationDate:
-               description: fecha que queremos consultar
-               type: string
-               format: date-time
-               example: '2023-05-01T14:30:00Z'
-            precio:
-               description: precio a aplicar
-               type: number
-               example: 19.99
-            curr:
-               description: moneda
-               type: string
-               example: EUR
-      JwtResponse:
-         type: object
-         properties:
-            jwttoken:
-               type: string
-      JwtRequest:
-         type: object
-         properties:
-            identificator:
-               type: string
-               description: Username
-               example: Pedro69
-            password:
-               type: string
-               description: User password
-               example: 1234
+  schemas:
+    PriceDTO:
+      type: object
+      properties:
+        brandId:
+          description: id de la empresa del grupo
+          type: string
+          example: '1'
+        productId:
+          description: id del producto
+          type: string
+          example: '1565'
+        consultationDate:
+          description: fecha que queremos consultar
+          type: string
+          format: date-time
+          example: '2023-05-01T14:30:00Z'
+        precio:
+          description: precio a aplicar
+          type: number
+          example: 19.99
+        curr:
+          description: moneda
+          type: string
+          example: EUR
+    JwtResponse:
+      type: object
+      properties:
+        jwttoken:
+          type: string
+          description: token de seguridad
+    JwtRequest:
+      type: object
+      properties:
+        identificator:
+          type: string
+          description: Username
+          example: 'Pedro69'
+        password:
+          type: string
+          description: clave para el login
+          example: '1234'

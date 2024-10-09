@@ -29,26 +29,28 @@ class MapperPriceTest {
 		price.setPriceList(1);
 		price.setPriority((short) 1);
 		price.getPriority();
-		price.setProductID("3915");
+		price.setProductId("3915");
 
 		PriceDTO priceDTO = new PriceDTO();
 		priceDTO.setBrandId("1");
-		OffsetDateTime consulta = OffsetDateTime.of(2023, 11, 21, 15, 30, 0, 0, ZoneOffset.UTC);
+		OffsetDateTime consulta =
+		        OffsetDateTime.of(2023, 11, 21, 15, 30, 0, 0, ZoneOffset.UTC);
 		priceDTO.setConsultationDate(consulta);
 		priceDTO.setCurr("EUR");
 		BigDecimal precio = BigDecimal.valueOf(39.12);
 		priceDTO.setPrecio(precio);
-		priceDTO.setProductID("3915");
+		priceDTO.setProductId("3915");
 
 		PriceDTO originalPriceDTO = priceDTO;
 
 		priceDTO = mapper.mapeoADTO(price, consulta);
 		assertEquals(priceDTO.getBrandId(), price.getBrandId());
-		assertEquals(priceDTO.getProductID(), price.getProductID());
+		assertEquals(priceDTO.getProductId(), price.getProductId());
 		assertEquals(priceDTO.getPrecio().doubleValue(), price.getPrecio());
 		assertEquals(originalPriceDTO.getBrandId(), priceDTO.getBrandId());
-		assertEquals(originalPriceDTO.getProductID(), priceDTO.getProductID());
-		assertEquals(originalPriceDTO.getConsultationDate(), priceDTO.getConsultationDate());
+		assertEquals(originalPriceDTO.getProductId(), priceDTO.getProductId());
+		assertEquals(originalPriceDTO.getConsultationDate(),
+		        priceDTO.getConsultationDate());
 		assertEquals(originalPriceDTO.getConsultationDate(), consulta);
 	}
 
@@ -56,16 +58,19 @@ class MapperPriceTest {
 	void testMapeoADTO2() {
 		OffsetDateTime fechaConsulta = OffsetDateTime.now();
 		BigDecimal precio = BigDecimal.valueOf(39.12);
-		Price price = new Price(1, "1", fechaConsulta, fechaConsulta, "3915", (short) 1, 39.12, "EUR");
+		Price price = new Price(1, "1", fechaConsulta, fechaConsulta, "3915", (short) 1,
+		        39.12, "EUR");
 		PriceDTO priceDTO = new PriceDTO("1", "3915", fechaConsulta, precio, "EUR");
-		PriceDTO originalPriceDTO = new PriceDTO("1", "3915", fechaConsulta, precio, "EUR");
+		PriceDTO originalPriceDTO =
+		        new PriceDTO("1", "3915", fechaConsulta, precio, "EUR");
 		priceDTO = mapper.mapeoADTO(price, fechaConsulta);
 		assertEquals(priceDTO.getBrandId(), price.getBrandId());
-		assertEquals(priceDTO.getProductID(), price.getProductID());
+		assertEquals(priceDTO.getProductId(), price.getProductId());
 		assertEquals(priceDTO.getPrecio().doubleValue(), price.getPrecio());
 		assertEquals(originalPriceDTO.getBrandId(), priceDTO.getBrandId());
-		assertEquals(originalPriceDTO.getProductID(), priceDTO.getProductID());
-		assertEquals(originalPriceDTO.getConsultationDate(), priceDTO.getConsultationDate());
+		assertEquals(originalPriceDTO.getProductId(), priceDTO.getProductId());
+		assertEquals(originalPriceDTO.getConsultationDate(),
+		        priceDTO.getConsultationDate());
 	}
 
 }
