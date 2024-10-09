@@ -2,17 +2,21 @@ package com.inditex.presentacion.controlador;
 
 import java.util.Collection;
 import java.util.Collections;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.inditex.aplicacion.dto.JwtRequest;
 import com.inditex.aplicacion.dto.JwtResponse;
 import com.inditex.aplicacion.servicio.AdministratorService;
 import com.inditex.infraestructura.securization.JwtToken;
 import com.inditex.presentacion.api.AutenticacionApi;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +46,7 @@ public class AutenticacionController implements AutenticacionApi{
 	}
 
 	private void authenticate(String username, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<? extends GrantedAuthority> authorities) throws BadCredentialsException{
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(username, password, authorities));
 	}

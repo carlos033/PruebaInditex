@@ -4,8 +4,11 @@
  */
 package com.inditex.infraestructura.securization;
 
-import java.util.Arrays;
-import java.util.List;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +27,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import lombok.AllArgsConstructor;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Carlos Diaz https://github.com/carlos033?tab=repositories
@@ -45,9 +46,8 @@ class WebSecurityConfig{
 	private static final String SUPERHERO = "/SuperHero/**";
 	private static final String H2 = "/h2-console/**";
 	private static final List<AntPathRequestMatcher> PERMIT_ALL_MATCHERS =
-			Arrays.asList(new AntPathRequestMatcher("/v3/api-docs/**"), new AntPathRequestMatcher(
-					H2),
-					new AntPathRequestMatcher("/swagger-ui/**"),
+			Arrays.asList(new AntPathRequestMatcher("/v3/api-docs/**"), new AntPathRequestMatcher(H2),
+					new AntPathRequestMatcher("/swagger-ui/**"),new AntPathRequestMatcher("/inditex.html/**"),
 					new AntPathRequestMatcher("/swagger-ui.html"), new AntPathRequestMatcher("/w2m.html"));
 	private final JwtAuthenticationPoint jwtAuthenticationEntryPoint;
 
@@ -71,8 +71,7 @@ class WebSecurityConfig{
 						.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 						.requestMatchers(LOGIN).permitAll()
 						.requestMatchers(PERMIT_ALL_MATCHERS.toArray(new AntPathRequestMatcher[0])).permitAll()
-						.requestMatchers(new AntPathRequestMatcher(
-								SUPERHERO)).authenticated().anyRequest()
+						.requestMatchers(new AntPathRequestMatcher(SUPERHERO)).authenticated().anyRequest()
 						.authenticated())
 				.exceptionHandling(exceptionHandling -> exceptionHandling
 						.authenticationEntryPoint(jwtAuthenticationEntryPoint))

@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class PriceDTOTest{
+class PriceDTOTest {
 
 	@Mock
 	private PriceDTO mockedPriceDTO;
@@ -26,14 +26,14 @@ class PriceDTOTest{
 
 		// Mock the behavior of the getter methods
 		when(mockedPriceDTO.getBrandId()).thenReturn(brandId);
-		when(mockedPriceDTO.getProductID()).thenReturn(productId);
+		when(mockedPriceDTO.getProductId()).thenReturn(productId);
 		when(mockedPriceDTO.getConsultationDate()).thenReturn(consultationDate);
 		when(mockedPriceDTO.getPrecio()).thenReturn(precio);
 		when(mockedPriceDTO.getCurr()).thenReturn(curr);
 
 		// Test the getter methods
 		assertEquals(brandId, mockedPriceDTO.getBrandId());
-		assertEquals(productId, mockedPriceDTO.getProductID());
+		assertEquals(productId, mockedPriceDTO.getProductId());
 		assertEquals(consultationDate, mockedPriceDTO.getConsultationDate());
 		assertEquals(precio, mockedPriceDTO.getPrecio());
 		assertEquals(curr, mockedPriceDTO.getCurr());

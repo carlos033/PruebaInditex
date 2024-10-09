@@ -1,0 +1,57 @@
+databaseChangeLog:
+-  changeSet:
+      id: 1
+      author: Carlos Diaz
+      preConditions:
+         onFail: MARK_RAN
+         not:
+            tableExists:
+               tableName: Price
+      changes:
+      -  createTable:
+            tableName: Price
+            columns:
+            -  column:
+                  name: price_list
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                     primaryKey: true
+                     nullable: false
+            -  column:
+                  name: brand_id
+                  type: varchar(255)
+                  constraints:
+                     unique: false
+                     nullable: false
+            -  column:
+                  name: start_date
+                  type: datetime
+                  constraints:
+                     nullable: false
+            -  column:
+                  name: end_date
+                  type: datetime
+                  constraints:
+                     nullable: true
+            -  column:
+                  name: product_id
+                  type: varchar(255)
+                  constraints:
+                     unique: false
+                     nullable: true
+            -  column:
+                  name: priority
+                  type: smallint
+                  constraints:
+                     nullable: false
+            -  column:
+                  name: price
+                  type: decimal(10,2)
+                  constraints:
+                     nullable: false
+            -  column:
+                  name: curr
+                  type: varchar(3)
+                  constraints:
+                     nullable: false

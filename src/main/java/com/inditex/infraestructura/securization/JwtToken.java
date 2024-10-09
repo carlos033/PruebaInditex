@@ -1,5 +1,15 @@
 package com.inditex.infraestructura.securization;
 
+import com.inditex.dominio.excepciones.MyInvalidClaimException;
+import com.inditex.dominio.excepciones.TokenValidationException;
+import com.inditex.infraestructura.entidad.Administrator;
+import com.inditex.infraestructura.entidad.Logable;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
@@ -8,14 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import org.springframework.stereotype.Component;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.InvalidClaimException;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.inditex.infraestructura.entidad.Administrator;
-import com.inditex.infraestructura.entidad.Logable;
 
 /**
  * Carlos Diaz https://github.com/carlos033?tab=repositories
@@ -23,45 +25,42 @@ import com.inditex.infraestructura.entidad.Logable;
 @Component
 public class JwtToken{
 	private static final String USER_NAME = "userName";
-	private static final String JWT_DECODE_EXCEPTION = "Error decoding the token";
 	private static final String INVALID_CLAIM_EXCEPTION =
 			"The 'user' object is not of the expected type";
 	private static final String USER = "user";
-	private String secret;
+	private SecretKey secret;
 
 	public JwtToken() {
 		this.secret = generateRandomSecret();
 	}
 
-	private String generateRandomSecret() {
+	private SecretKey generateRandomSecret() {
 		byte[] randomBytes = new byte[256];
 		new SecureRandom().nextBytes(randomBytes);
-		return Base64.getEncoder().encodeToString(randomBytes);
+		byte[] keyBytes = Base64.getEncoder().encode(randomBytes);
+		return new SecretKeySpec(keyBytes, "HmacSHA256");
 	}
 
 	public String getTokenIdentifier(String token) {
-		return getClaimFromToken(token, DecodedJWT::getSubject);
+		return getClaimFromToken(token, Claims::getSubject);
 	}
 
-	public Instant getTokenExpiration(String token) {
-		return getClaimFromToken(token, DecodedJWT::getExpiresAt).toInstant();
+	public Date getTokenExpiration(String token) {
+		return getClaimFromToken(token, Claims::getExpiration);
 	}
 
-	public <T> T getClaimFromToken(String token, Function<DecodedJWT, T> claimsResolver) {
-		return claimsResolver.apply(decodeToken(token));
+	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+		final Claims claims = extractAllClaims(token);
+		return claimsResolver.apply(claims);
 	}
 
-	private DecodedJWT decodeToken(String token) {
-		try {
-			return (JWT.require(Algorithm.HMAC512(secret)).build()).verify(token);
-		} catch (JWTDecodeException exception) {
-			throw new JWTDecodeException(JWT_DECODE_EXCEPTION, exception);
-		}
+	private Claims extractAllClaims(String token) {
+		return Jwts.parser().verifyWith(secret).build().parseSignedClaims(token).getPayload();
 	}
 
 	private Boolean hasTokenExpired(String token) {
-		final Instant expiration = getTokenExpiration(token);
-		return expiration.isBefore(Instant.now());
+		final Date expiration = getTokenExpiration(token);
+		return expiration.before(new Date());
 	}
 
 	public String generateToken(Logable user) {
@@ -75,7 +74,6 @@ public class JwtToken{
 	}
 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		final Algorithm algorithm = Algorithm.HMAC512(secret);
 		final Instant now = Instant.now();
 		final Instant expirationTime = now.plus(Duration.ofDays(1));
 
@@ -93,16 +91,18 @@ public class JwtToken{
 			}
 
 			if (!usuarioClaims.isEmpty()) {
-				return JWT.create().withSubject(subject).withIssuedAt(Date.from(now))
-						.withExpiresAt(Date.from(expirationTime)).withClaim(USER, usuarioClaims)
-						.sign(algorithm);
+
+				return Jwts.builder().subject(subject).issuedAt(Date.from(now))
+						.expiration(Date.from(expirationTime)).claim(USER, usuarioClaims).signWith(secret)
+						.compact();
 			}
 		}
-		throw new InvalidClaimException(INVALID_CLAIM_EXCEPTION);
+		throw new MyInvalidClaimException(INVALID_CLAIM_EXCEPTION);
 	}
 
 
-	public Boolean validateToken(String token, String expectedSubject) {
+	public Boolean validateToken(String token, String expectedSubject)
+			throws TokenValidationException {
 		final String identifier = getTokenIdentifier(token);
 		return (identifier.equals(expectedSubject) && !hasTokenExpired(token));
 	}
